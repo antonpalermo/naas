@@ -9,6 +9,7 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@huggingface/inference": "^4.13.13",
     "chanfana": "^2.6.3",
     "hono": "^4.6.20",
     "zod": "^3.24.1"
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@types/node": "^25.3.0",
     "@types/service-worker-mock": "^2.0.4",
+    "prettier": "^3.8.1",
     "wrangler": "^4.68.0"
   }
 }

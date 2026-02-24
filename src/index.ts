@@ -5,13 +5,17 @@ import { TaskDelete } from "./endpoints/taskDelete";
 import { TaskFetch } from "./endpoints/taskFetch";
 import { TaskList } from "./endpoints/taskList";
 
+import { CreateReasons } from "./endpoints/create-reasons";
+
 // Start a Hono app
 const app = new Hono<{ Bindings: Env }>();
 
 // Setup OpenAPI registry
 const openapi = fromHono(app, {
-	docs_url: "/",
+  docs_url: "/"
 });
+
+openapi.post("/api/reasons", CreateReasons);
 
 // Register OpenAPI endpoints
 openapi.get("/api/tasks", TaskList);
