@@ -11,7 +11,7 @@ const openapi = fromHono(app, {
   docs_url: "/"
 });
 
-openapi.post("/api/reasons", CreateReasons);
+openapi.get("/api/reasons", CreateReasons);
 
 // You may also register routes for non OpenAPI directly on Hono
 // app.get('/test', (c) => c.text('Hono!'))

@@ -11,16 +11,10 @@ export class CreateReasons extends OpenAPIRoute {
     tags: ["Reasoning"],
     summary: "Form a reason based on the provided context",
     request: {
-      body: {
-        content: {
-          "application/json": {
-            schema: z.object({
-              message: z.string(),
-              reason: z.string()
-            })
-          }
-        }
-      }
+      query: z.object({
+        message: z.string(),
+        reason: z.string()
+      })
     },
     responses: {
       "200": {
@@ -57,7 +51,7 @@ export class CreateReasons extends OpenAPIRoute {
         },
         {
           role: "user",
-          content: `Reject ${data.body.message} in a humble yet funny way. You can use my reason "${data.body.reason}" as a foundation.`
+          content: `Reject ${data.query.message} in a humble yet funny way. You can use my reason "${data.query.reason}" as a foundation.`
         }
       ]
     });
