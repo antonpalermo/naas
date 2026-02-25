@@ -4,10 +4,7 @@ import { z } from "zod";
 
 export type AppContext = Context<{ Bindings: Env }>;
 
-export const Task = z.object({
-	name: Str({ example: "lorem" }),
-	slug: Str(),
-	description: Str({ required: false }),
-	completed: z.boolean().default(false),
-	due_date: DateTime(),
+export const Request = z.object({
+  reason: z.enum(["out sick", "in vacation", "in a meeting", "emergency"]),
+  message: Str({ required: true })
 });

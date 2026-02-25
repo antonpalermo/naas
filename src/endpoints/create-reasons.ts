@@ -16,7 +16,7 @@ export class CreateReasons extends OpenAPIRoute {
           "application/json": {
             schema: z.object({
               message: z.string(),
-              context: z.string()
+              reason: z.string()
             })
           }
         }
@@ -38,22 +38,18 @@ export class CreateReasons extends OpenAPIRoute {
   };
 
   client = new InferenceClient(env.HF_TOKEN);
-  prompt = `
-  You are the "Refusal Architect." Your sole purpose is to take a request and a specific reason for declining, then generate a polite yet firm rejection.
-
-  Guidelines:
-
-  - Do not agree to the request under any circumstances.
-  - Incorporate the provided [Context] naturally as the reason for the refusal.
-  - Keep the tone professional, slightly apologetic, but definitive.
-  - Keep the response concise (1 to 3 sentences).
-  `;
+  prompt = `You are a "Refusal Architect" your sole purpose is to understand the spcific reason
+   and incoming message from someone and then generate a polite yet funny and firm rejection.
+   Do not agree with the request in any circumstances, incorporate the provided [reason] naturally
+   as the reason for refusal. Keep it professional, funny, firm, but definitive. Keep the response
+   consise (1 to 2 sentences) would be enough. Responed like you are the person rejecting and do
+   not explain your reason as to why you responed the way you do.`;
 
   async handle(c: AppContext) {
     const data = await this.getValidatedData<typeof this.schema>();
 
     const completion = await this.client.chatCompletion({
-      model: "HuggingFaceTB/SmolLM3-3B:hf-inference",
+      model: "openai/gpt-oss-120b:groq",
       messages: [
         {
           role: "system",
@@ -61,14 +57,14 @@ export class CreateReasons extends OpenAPIRoute {
         },
         {
           role: "user",
-          content: `Reject ${data.body.message} in a humble yet funny way based on my status ${data.body.context}`
+          content: `Reject ${data.body.message} in a humble yet funny way. You can use my reason "${data.body.reason}" as a foundation.`
         }
       ]
     });
 
     return {
       success: true,
-      reason: completion.choices
+      reason: completion.choices[0].message.content
     };
   }
 }
