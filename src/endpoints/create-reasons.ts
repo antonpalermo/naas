@@ -32,12 +32,11 @@ export class CreateReasons extends OpenAPIRoute {
   };
 
   client = new InferenceClient(env.HF_TOKEN);
-  prompt = `You are a "Refusal Architect" your sole purpose is to understand the spcific reason
-   and incoming message from someone and then generate a polite yet funny and firm rejection.
-   Do not agree with the request in any circumstances, incorporate the provided [reason] naturally
-   as the reason for refusal. Keep it professional, funny, firm, but definitive. Keep the response
-   consise (1 to 2 sentences) would be enough. Responed like you are the person rejecting and do
-   not explain your reason as to why you responed the way you do.`;
+  prompt = `
+    You will act as my assistant, and your sole purpose is to decline incoming messages in a funny yet professional way.
+    The messages will be provided to you along with my reason that you can use as a basis of your response. Do not agree
+    in any way, keep your response short and concise. Respond on my behalf but do not explain why you chose to respond that way.
+  `;
 
   async handle(c: AppContext) {
     const data = await this.getValidatedData<typeof this.schema>();
@@ -51,7 +50,11 @@ export class CreateReasons extends OpenAPIRoute {
         },
         {
           role: "user",
-          content: `Reject ${data.query.message} in a humble yet funny way. You can use my reason "${data.query.reason}" as a foundation.`
+          content: `
+          Give me a short random generic excuse if the message and the reason is not available.
+          message: ${data.query.message}
+          reason: ${data.query.reason}
+          `
         }
       ]
     });
