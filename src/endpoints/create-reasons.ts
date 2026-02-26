@@ -12,8 +12,8 @@ export class CreateReasons extends OpenAPIRoute {
     summary: "Form a reason based on the provided context",
     request: {
       query: z.object({
-        message: z.string(),
-        reason: z.string()
+        message: z.string().optional(),
+        reason: z.string().optional()
       })
     },
     responses: {
